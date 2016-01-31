@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<system-libraries>
+    <library path="C:/glassfish4/glassfish/modules/javax.ws.rs-api.jar" source="C:/Users/andrew/.m2/repository/javax/ws/rs/javax.ws.rs-api/2.0.1/javax.ws.rs-api-2.0.1-sources.jar"/>
+    <library path="C:/glassfish4/glassfish/modules/javax.servlet-api.jar" source="C:/Users/andrew/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-sources.jar"/>
+</system-libraries>
