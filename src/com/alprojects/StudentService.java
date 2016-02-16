@@ -1,6 +1,8 @@
 package com.alprojects;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -11,6 +13,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 import org.springframework.context.ApplicationContext;
@@ -45,15 +50,27 @@ public class StudentService {
 		studDAO = (StudentJdbcDAO) context.getBean("studentJDBCDAO");
 	}
 
+	private String wrapJson(
+			String rootName, String rootValue,
+			String objectName, Object objItself ) throws IOException
+	{
+		Map<String,Object> mp = new HashMap<>();
+		mp.put(rootName, rootValue);
+		mp.put(objectName, objItself);
+
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+
+		return ow.writeValueAsString(mp);
+	}
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/getall")
 	public Response getStudents()
 	{
 		try {
-			JtableResponse response = new JtableResponse( "OK", studDAO.listStudents() );
-			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-			String strResponse = ow.writeValueAsString(response);
+			String strResponse = wrapJson( "Result", "OK", "Records", studDAO.listStudents() );
 			return Response.ok(strResponse, MediaType.APPLICATION_JSON).build();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -71,48 +88,36 @@ public class StudentService {
 	private static Integer nonnull( Integer intgr )
 	{
 		return intgr == null ? 0 : intgr;
-	}	
-	
+	}
+
 	@POST
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/append")
 	public Response appendStudent( 
 			String strstud
-			// final StudentAdd stud
 			) {
-		// System.out.println( "Name is" + nonnull( stud.getName() )  );
-		// System.out.println( "Age is" + nonnull( stud.getAge() )  );
 		System.out.println( "Object received : " + nonnull(strstud) );
 		
 		ObjectMapper mapper = new ObjectMapper();
-		StudentAdd sa = null;
+		StudentAdd sa;
+
 		try {
-			sa = mapper.readValue( strstud, StudentAdd.class );
-		} catch (IOException e) {
-			System.out.println("Unsuppoted media type");
-			e.printStackTrace();
-			return Response.status(Status.UNSUPPORTED_MEDIA_TYPE).build();
-		}
-		
-		int id = studDAO.create(sa.getName(), sa.getAge());
-		
-		System.out.println( "returned value is : " + id );
-		
-		Student stud = new Student( id, sa.getName(), sa.getAge() );
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		try {
-			String strResponse = ow.writeValueAsString(stud);
+			sa = mapper.readValue(strstud, StudentAdd.class);
+			int id = studDAO.create(sa.getName(), sa.getAge());
+			Student stud = new Student(id, sa.getName(), sa.getAge());
+			String strResponse = wrapJson( "Result", "OK", "Record", stud );
 			return Response.ok(strResponse, MediaType.APPLICATION_JSON).build();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if ( e instanceof JsonProcessingException )
+			{
+				System.out.println("Unsuppoted media type");
+				e.printStackTrace();
+				return Response.status(Status.UNSUPPORTED_MEDIA_TYPE).build();
+			}
 		}
-		
 		return Response.serverError().build();
 	}
-	
-	
 
 }
 

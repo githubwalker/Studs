@@ -13,28 +13,37 @@
 <body>
 <div id="PeopleTableContainer" style="width: 800px;"></div>
 
-<b>Button with single icon</b><br/>
-<button id="btnDemo"></button>
-
-
 <!-- http://www.codeproject.com/Articles/594874/CRUD-tables-in-WebMatrix-using-jTable-jQuery-plugi -->
 
 <script type="text/javascript">
+
+    // https://mindmup.github.io/editable-table/
+    // http://stackoverflow.com/questions/8648892/convert-url-parameters-to-a-javascript-object
+
+    function convert2jsonstring( urlparams_string )
+    {
+        var js_parsed = urlparams_string
+                ?
+                JSON.parse('{"' + urlparams_string.replace(/&/g, '","').replace(/=/g,'":"') + '"}',
+                        function(key, value) { return key===""?value:decodeURIComponent(value) })
+                :
+        {}
+        ;
+
+        return JSON.stringify( js_parsed );
+    }
 
     $(document).ready(function () {
 
         $('#PeopleTableContainer').jtable({
             title: 'Table of people',
             actions: {
-                // listAction: 'PersonActions.php?action=list',
-                // listAction: 'data/tbl.json'
-                // listAction: 'C:/PROJECTS/js/1/data/tbl.json'
                 listAction: 'crunchify/students/getall',
-                // createAction: 'crunchify/students/append'
-
                 createAction: function (postData) {
 
                     console.log('creating from custom function...');
+
+                    var json_string = convert2jsonstring(postData);
 
                     return $.Deferred(function ($dfd) {
 
@@ -48,9 +57,7 @@
                             },
                             type: 'POST',
                             dataType: 'json',
-                            // dataType: 'application/json',
-                            data: JSON.stringify(postData),
-                            // data: '{ "Name" : "Iam", "Age" : 15 }',
+                            data: json_string,
                             success: function (data) {
                                 console.log('success ...');
                                 $dfd.resolve(data);
@@ -85,30 +92,6 @@
 
         //Load person list from server
         $('#PeopleTableContainer').jtable('load');
-
-        $("#btnDemo").button({
-            label: 'Test'
-        })
-        .click(
-            function( event ) {
-                event.preventDefault();
-
-                $.ajax({
-                    url: 'crunchify/students/append',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: JSON.stringify('{"PersonId":1,"Name":"Benjamin Button","Age":17}'),
-                    success: function (data) {
-                        console.log('success ...');
-                    },
-                    error: function () {
-                        console.log('error ...');
-                    }
-                });
-
-            }
-        )
-        ;
 
     });
 
