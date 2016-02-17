@@ -115,8 +115,9 @@ public class StudentService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/update")
+	@Path("/update/{id}")
 	public Response updateStudent(
+			@PathParam("id") Integer id,
 			String strstud
 	) {
 		System.out.println( "updateStudent. object received : " + nonnull(strstud) );
@@ -126,7 +127,7 @@ public class StudentService {
 
 		try {
 			stud_in = mapper.readValue(strstud, Student.class);
-			studDAO.update( stud_in.getId(), stud_in.getName(), stud_in.getAge() );
+			studDAO.update( id, stud_in.getName(), stud_in.getAge() );
 			String strResponse = wrapJson( "Result", "OK", "Record", stud_in );
 			return Response.ok(strResponse, MediaType.APPLICATION_JSON).build();
 		} catch (IOException e) {

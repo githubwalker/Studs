@@ -67,10 +67,11 @@
                 updateAction: function (postData) {
                     console.log('updateAction has been called...');
                     var json_string = convert2jsonstring(postData);
+                    var stud = JSON.parse( json_string );
 
                     return $.Deferred(function ($dfd) {
                         $.ajax({
-                            url: 'crunchify/students/update',
+                            url: 'crunchify/students/update/' + stud.PersonId,
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
