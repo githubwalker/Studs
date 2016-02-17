@@ -38,9 +38,6 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 @Path("/students")
 public class StudentService {
 	private StudentJdbcDAO studDAO;
-	
-	// @Context
-	// ServletContext ctx;
 
 	public StudentService( @Context ServletContext ctx ) {
 		
@@ -64,6 +61,12 @@ public class StudentService {
 		return ow.writeValueAsString(mp);
 	}
 
+	private static String nonnull( String str )	{ return str == null ? "<null>" : str;}
+	private static Integer nonnull( Integer intgr )
+	{
+		return intgr == null ? 0 : intgr;
+	}
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/getall")
@@ -80,15 +83,6 @@ public class StudentService {
 		return Response.serverError().build();
 	}
 	
-	private static String nonnull( String str )
-	{
-		return str == null ? "<null>" : str;
-	}
-	
-	private static Integer nonnull( Integer intgr )
-	{
-		return intgr == null ? 0 : intgr;
-	}
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
@@ -97,7 +91,7 @@ public class StudentService {
 	public Response appendStudent( 
 			String strstud
 			) {
-		System.out.println( "Object received : " + nonnull(strstud) );
+		System.out.println( "appendStudent. object received : " + nonnull(strstud) );
 		
 		ObjectMapper mapper = new ObjectMapper();
 		StudentAdd sa;
@@ -111,7 +105,35 @@ public class StudentService {
 		} catch (IOException e) {
 			if ( e instanceof JsonProcessingException )
 			{
-				System.out.println("Unsuppoted media type");
+				System.out.println("Unsupported media type");
+				e.printStackTrace();
+				return Response.status(Status.UNSUPPORTED_MEDIA_TYPE).build();
+			}
+		}
+		return Response.serverError().build();
+	}
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/update")
+	public Response updateStudent(
+			String strstud
+	) {
+		System.out.println( "updateStudent. object received : " + nonnull(strstud) );
+
+		ObjectMapper mapper = new ObjectMapper();
+		Student stud_in;
+
+		try {
+			stud_in = mapper.readValue(strstud, Student.class);
+			studDAO.update( stud_in.getId(), stud_in.getName(), stud_in.getAge() );
+			String strResponse = wrapJson( "Result", "OK", "Record", stud_in );
+			return Response.ok(strResponse, MediaType.APPLICATION_JSON).build();
+		} catch (IOException e) {
+			if ( e instanceof JsonProcessingException )
+			{
+				System.out.println("Unsupported media type");
 				e.printStackTrace();
 				return Response.status(Status.UNSUPPORTED_MEDIA_TYPE).build();
 			}

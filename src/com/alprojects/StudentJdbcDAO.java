@@ -10,29 +10,19 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 public class StudentJdbcDAO {
-	private DataSource dataSource;
 	private SimpleJdbcTemplate jdbcTemplateObject;
 	private SimpleJdbcInsert jdbcInsert;
 
 	public void setDataSource(DataSource ds) {
-		dataSource = ds;
-		jdbcTemplateObject = new SimpleJdbcTemplate(dataSource);
+		jdbcTemplateObject = new SimpleJdbcTemplate(ds);
 		jdbcInsert =   
-			new SimpleJdbcInsert(dataSource)  
+			new SimpleJdbcInsert(ds)
 			.withTableName("Students")  
 			.usingGeneratedKeyColumns("id");  		
 	}
 
-	/*
 	public int create(String name, Integer age) {
-		String sql = "insert into Students (name, age) values (?, ?)";
-		return jdbcTemplateObject.update(sql, name, age);
-	}
-	*/
-	public int create(String name, Integer age) {
-		// String sql = "insert into Students (name, age) values (?, ?)";
-		// jdbcTemplateObject
-		Map<String,Object> params = new HashMap<String,Object>();
+		Map<String,Object> params = new HashMap<>();
 		params.put("name", name);
 		params.put("age", age);
 		Number id = jdbcInsert.executeAndReturnKey(params);
@@ -55,8 +45,8 @@ public class StudentJdbcDAO {
 		return jdbcTemplateObject.update(sql, id);
 	}
 
-	public int update(Integer id, Integer age) {
-		String sql = "update Students set age = ? where id = ?";
-		return jdbcTemplateObject.update(sql, age, id);
+	public int update(Integer id, String name, Integer age) {
+		String sql = "update Students set name = ? , age = ? where id = ?";
+		return jdbcTemplateObject.update(sql, name, age, id);
 	}
 }

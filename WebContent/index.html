@@ -40,15 +40,10 @@
             actions: {
                 listAction: 'crunchify/students/getall',
                 createAction: function (postData) {
-
-                    console.log('creating from custom function...');
-
+                    console.log('createAction has been called...');
                     var json_string = convert2jsonstring(postData);
 
                     return $.Deferred(function ($dfd) {
-
-                        console.log('calling server ...');
-
                         $.ajax({
                             url: 'crunchify/students/append',
                             headers: {
@@ -59,11 +54,36 @@
                             dataType: 'json',
                             data: json_string,
                             success: function (data) {
-                                console.log('success ...');
+                                console.log('createAction success ...');
                                 $dfd.resolve(data);
                             },
                             error: function () {
-                                console.log('error ...');
+                                console.log('createAction error ...');
+                                $dfd.reject();
+                            }
+                        });
+                    });
+                },
+                updateAction: function (postData) {
+                    console.log('updateAction has been called...');
+                    var json_string = convert2jsonstring(postData);
+
+                    return $.Deferred(function ($dfd) {
+                        $.ajax({
+                            url: 'crunchify/students/update',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            type: 'POST',
+                            dataType: 'json',
+                            data: json_string,
+                            success: function (data) {
+                                console.log('updateAction success ...');
+                                $dfd.resolve(data);
+                            },
+                            error: function () {
+                                console.log('updateAction error ...');
                                 $dfd.reject();
                             }
                         });
@@ -72,20 +92,20 @@
 
             },
             fields: {
-                Name: {
-                    title: 'Author Name',
-                    width: '40%'
-                },
-                Age: {
-                    title: 'Age',
-                    width: '20%'
-                },
                 PersonId: {
-                    title: 'Person Id',
+                    title: 'Student Id',
                     key: true,
                     create: false,
                     edit: false,
                     list: true
+                },
+                Name: {
+                    title: 'Student Name',
+                    width: '40%'
+                },
+                Age: {
+                    title: 'age',
+                    width: '20%'
                 }
             }
         });
