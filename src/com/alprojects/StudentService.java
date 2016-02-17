@@ -5,10 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
@@ -53,7 +50,9 @@ public class StudentService {
 	{
 		Map<String,Object> mp = new HashMap<>();
 		mp.put(rootName, rootValue);
-		mp.put(objectName, objItself);
+
+		if ( objectName != null )
+			mp.put(objectName, objItself);
 
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -141,5 +140,24 @@ public class StudentService {
 		return Response.serverError().build();
 	}
 
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/delete/{id}")
+	public Response deleteStudent(
+			@PathParam("id") Integer id
+	)
+	{
+		System.out.println( "deleteStudent. id received : " + nonnull(id) );
+		try {
+			studDAO.delete( id );
+			String strResponse = wrapJson( "Result", "OK", null, null );
+			return Response.ok(strResponse, MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			// something wrong happened
+		}
+
+		return Response.serverError().build();
+	}
 }
 
