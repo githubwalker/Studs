@@ -29,6 +29,8 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 // http://crunchify.com/create-very-simple-jersey-rest-service-and-send-json-data-from-java-client/
 // https://www.nabisoft.com/tutorials/java-ee/producing-and-consuming-json-or-xml-in-java-rest-services-with-jersey-and-jackson
 
+// AUTH
+// http://devcolibri.com/3810
 
 @Path("/students")
 public class StudentService {
@@ -40,22 +42,6 @@ public class StudentService {
 		ApplicationContext context =
 				new FileSystemXmlApplicationContext(strPath);
 		studDAO = (StudentJdbcDAO) context.getBean("studentJDBCDAO");
-	}
-
-	private String wrapJson(
-			String rootName, String rootValue,
-			String objectName, Object objItself ) throws IOException
-	{
-		Map<String,Object> mp = new HashMap<>();
-		mp.put(rootName, rootValue);
-
-		if ( objectName != null )
-			mp.put(objectName, objItself);
-
-		ObjectMapper mapper = new ObjectMapper();
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-
-		return ow.writeValueAsString(mp);
 	}
 
 	private static String nonnull( String str )	{ return str == null ? "<null>" : str;}
@@ -98,7 +84,10 @@ public class StudentService {
 	public Response getStudents()
 	{
 		try {
-			String strResponse = wrapJson( "Result", "OK", "Records", studDAO.listStudents() );
+			String strResponse = new JsonBuilder()
+					.add("Result", "OK" )
+					.add("Records", studDAO.listStudents())
+					.build();
 			return Response.ok(strResponse, MediaType.APPLICATION_JSON).build();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -125,7 +114,10 @@ public class StudentService {
 			sa = mapper.readValue(strstud, StudentAdd.class);
 			int id = studDAO.create(sa.getName(), sa.getAge());
 			Student stud = new Student(id, sa.getName(), sa.getAge());
-			String strResponse = wrapJson( "Result", "OK", "Record", stud );
+			String strResponse = new JsonBuilder()
+					.add( "Result", "OK" )
+					.add( "Record", stud )
+					.build();
 			return Response.ok(strResponse, MediaType.APPLICATION_JSON).build();
 		} catch (IOException e) {
 			if ( e instanceof JsonProcessingException )
@@ -154,7 +146,10 @@ public class StudentService {
 		try {
 			stud_in = mapper.readValue(strstud, Student.class);
 			studDAO.update( id, stud_in.getName(), stud_in.getAge() );
-			String strResponse = wrapJson( "Result", "OK", "Record", stud_in );
+			String strResponse = new JsonBuilder()
+					.add( "Result", "OK" )
+					.add( "Record", stud_in )
+					.build();
 			return Response.ok(strResponse, MediaType.APPLICATION_JSON).build();
 		} catch (IOException e) {
 			if ( e instanceof JsonProcessingException )
@@ -178,7 +173,9 @@ public class StudentService {
 		System.out.println( "deleteStudent. id received : " + nonnull(id) );
 		try {
 			studDAO.delete( id );
-			String strResponse = wrapJson( "Result", "OK", null, null );
+			String strResponse = new JsonBuilder()
+					.add( "Result", "OK" )
+					.build();
 			return Response.ok(strResponse, MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			// something wrong happened
