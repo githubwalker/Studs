@@ -35,6 +35,16 @@ public class StudentJdbcDAO {
 		return jdbcTemplateObject.queryForObject(sql, new StudentMapper(), id);
 	}
 
+	public List<Student> listStudentsPaged( Integer fromIndex, Integer nItems ) {
+		String sql = "select * from Students LIMIT ?, ?";
+		return jdbcTemplateObject.query(sql, new StudentMapper(), fromIndex, nItems);
+	}
+
+	public Integer getTotalStudents() {
+		String sql = "select count(*) from Students";
+		return jdbcTemplateObject.queryForInt( sql );
+	}
+
 	public List<Student> listStudents() {
 		String sql = "select * from Students";
 		return jdbcTemplateObject.query(sql, new StudentMapper());

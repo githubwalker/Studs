@@ -36,9 +36,36 @@
     $(document).ready(function () {
 
         $('#PeopleTableContainer').jtable({
-            title: 'Table of people',
+            title: 'Table of students',
+            paging:true,
+            pageSize: 10,
+            // sorting: true,
+            // defaultSorting: 'PersonId ASC',
+            // paging:true,
             actions: {
-                listAction: 'crunchify/students/getall',
+                // listAction: 'crunchify/students/getall',
+                listAction: function (postData, jtParams) {
+                    console.log("Loading from custom function...");
+                    return $.Deferred(function ($dfd) {
+                        $.ajax({
+                            url: 'crunchify/students/getPage/' + jtParams.jtStartIndex + '/' + jtParams.jtPageSize,
+                            type: 'POST',
+                            dataType: 'json',
+                            data: postData,
+                            success: function (data) {
+                                $dfd.resolve(data);
+                            },
+                            error: function () {
+                                $dfd.reject();
+                            }
+                        });
+                    });
+                },                /*
+                listAction: function (postData) {
+                    console.log('listAction has been called...');
+                    var json_string = convert2jsonstring(postData);
+                },
+                */
                 createAction: function (postData) {
                     console.log('createAction has been called...');
                     var json_string = convert2jsonstring(postData);

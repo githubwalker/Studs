@@ -10,9 +10,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 import org.springframework.context.ApplicationContext;
@@ -64,6 +62,34 @@ public class StudentService {
 	private static Integer nonnull( Integer intgr )
 	{
 		return intgr == null ? 0 : intgr;
+	}
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getPage/{startIndex}/{numberItems}")
+	public Response getPage(
+			@PathParam("startIndex") Integer startIndex,
+			@PathParam("numberItems") Integer numberItems
+	)
+	{
+		try {
+			Integer nStuds = studDAO.getTotalStudents();
+			String strResponse = new JsonBuilder()
+					.add("Result", "OK" )
+					.add("TotalRecordCount", nStuds )
+					.add( "Records", studDAO.listStudentsPaged(startIndex, numberItems) )
+					.build();
+			return Response.ok(strResponse, MediaType.APPLICATION_JSON).build();
+		} catch (IOException e) {
+			e.printStackTrace();
+			if ( e instanceof JsonProcessingException )
+			{
+				System.out.println("Unsupported media type");
+				return Response.status(Status.UNSUPPORTED_MEDIA_TYPE).build();
+			}
+		}
+
+		return Response.serverError().build();
 	}
 
 	@POST
