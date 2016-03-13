@@ -43,12 +43,11 @@
             // defaultSorting: 'PersonId ASC',
             // paging:true,
             actions: {
-                // listAction: 'crunchify/students/getall',
                 listAction: function (postData, jtParams) {
                     console.log("Loading from custom function...");
                     return $.Deferred(function ($dfd) {
                         $.ajax({
-                            url: 'crunchify/students/getPage/' + jtParams.jtStartIndex + '/' + jtParams.jtPageSize,
+                            url: 'rest/students/getPage/' + jtParams.jtStartIndex + '/' + jtParams.jtPageSize,
                             type: 'POST',
                             dataType: 'json',
                             data: postData,
@@ -72,7 +71,7 @@
 
                     return $.Deferred(function ($dfd) {
                         $.ajax({
-                            url: 'crunchify/students/append',
+                            url: 'rest/students/append',
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
@@ -98,7 +97,7 @@
 
                     return $.Deferred(function ($dfd) {
                         $.ajax({
-                            url: 'crunchify/students/update/' + stud.PersonId,
+                            url: 'rest/students/update/' + stud.PersonId,
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
@@ -122,7 +121,7 @@
 
                     return $.Deferred(function ($dfd) {
                         $.ajax({
-                            url: 'crunchify/students/delete/' + postData.PersonId,
+                            url: 'rest/students/delete/' + postData.PersonId,
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'

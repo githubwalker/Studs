@@ -6,9 +6,12 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.stereotype.Service;
 
+@Service
 public class StudentJdbcDAO {
 	private SimpleJdbcTemplate jdbcTemplateObject;
 	private SimpleJdbcInsert jdbcInsert;
