@@ -38,7 +38,7 @@ public class StudentService {
 
 	public StudentService( @Context ServletContext ctx ) {
 		
-		String strPath = ctx.getRealPath("/config/jdbc.xml");
+		String strPath = ctx.getRealPath("/WEB-INF/jdbc.xml");
 		ApplicationContext context =
 				new FileSystemXmlApplicationContext(strPath);
 		studDAO = (StudentJdbcDAO) context.getBean("studentJDBCDAO");
