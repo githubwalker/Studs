@@ -33,7 +33,7 @@
 
     <servlet-mapping>
         <servlet-name>spring_rest_api</servlet-name>
-        <url-pattern>/sprrest/*</url-pattern>
+        <url-pattern>/springrestapi/*</url-pattern>
     </servlet-mapping>
 
 

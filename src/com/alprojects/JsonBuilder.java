@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-class JsonBuilder {
+public class JsonBuilder {
     private Map<String, Object> mp = new HashMap<>();
 
     public JsonBuilder() {
@@ -18,9 +18,14 @@ class JsonBuilder {
         return this;
     }
 
-    String build() throws IOException {
+    public String build() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         return ow.writeValueAsString(mp);
+    }
+
+    public  Map<String, Object> getBuiltObject()
+    {
+        return this.mp;
     }
 }
