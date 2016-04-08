@@ -1,8 +1,8 @@
-package com.alprojects;
+package com.alprojects.oldapi;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class StudentAdd {
+class StudentAdd {
 	private String name;
 	private Integer age;
 	

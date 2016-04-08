@@ -1,4 +1,4 @@
-package com.alprojects;
+package com.alprojects.data;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 

@@ -1,8 +1,6 @@
-package com.alprojects;
+package com.alprojects.oldapi;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
@@ -10,9 +8,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
+import com.alprojects.data.JsonBuilder;
+import com.alprojects.data.Student;
+import com.alprojects.data.StudentJdbcDAO;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 

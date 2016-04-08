@@ -1,14 +1,14 @@
-package com.alprojects.spr;
+package com.alprojects.mvc_ctrl;
 
-import com.alprojects.Student;
-import com.alprojects.StudentJdbcDAO;
+import com.alprojects.data.Student;
+import com.alprojects.data.StudentJdbcDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.alprojects.JsonBuilder;
+import com.alprojects.data.JsonBuilder;
 
 import java.util.List;
 import java.util.Map;

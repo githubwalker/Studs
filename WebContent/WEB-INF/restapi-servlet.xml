@@ -12,7 +12,7 @@
 
     <!-- http://stackoverflow.com/questions/11376304/right-way-to-write-json-deserializer-in-spring-or-extend-it -->
 
-    <import resource="jdbc.xml"></import>
+    <import resource="jdbc.xml"/>
 
     <context:component-scan base-package="com.alprojects" />
 
@@ -31,16 +31,16 @@
 
         <property name="deserializersByType">
             <map key-type="java.lang.Class">
-                <entry key="com.alprojects.Student">
-                    <bean class="com.alprojects.spr.StudentDeserializer" />
+                <entry key="com.alprojects.data.Student">
+                    <bean class="com.alprojects.mvc_ctrl.StudentDeserializer" />
                 </entry>
             </map>
         </property>
 
         <property name ="serializersByType">
             <map key-type="java.lang.Class">
-                <entry key="com.alprojects.Student">
-                    <bean class="com.alprojects.spr.StudentSerializer" />
+                <entry key="com.alprojects.data.Student">
+                    <bean class="com.alprojects.mvc_ctrl.StudentSerializer" />
                 </entry>
             </map>
         </property>

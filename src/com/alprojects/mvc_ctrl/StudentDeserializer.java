@@ -1,6 +1,6 @@
-package com.alprojects.spr;
+package com.alprojects.mvc_ctrl;
 
-import com.alprojects.Student;
+import com.alprojects.data.Student;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -10,19 +10,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 
-/**
- * Created by andrew on 08.04.2016.
- */
 public class StudentDeserializer extends JsonDeserializer<Student>
 {
     @Override
-    public Student deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException
+    public Student deserialize(JsonParser p, DeserializationContext ctxt) throws IOException //, JsonProcessingException
     {
         ObjectCodec oc = p.getCodec();
         JsonNode student_node = oc.readTree( p );
         Student newStudent = new Student();
 
-        JsonNode n = null;
+        JsonNode n;
 
         if ( (n = student_node.get("Name")) != null)
             newStudent.setName(n.textValue());

@@ -1,4 +1,4 @@
-package com.alprojects;
+package com.alprojects.data;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;

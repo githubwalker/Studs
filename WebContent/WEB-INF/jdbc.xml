@@ -15,7 +15,7 @@
 
    <!-- Definition for StudentJdbcDAO bean -->
    <bean id="studentJDBCDAO" 
-      class="com.alprojects.StudentJdbcDAO">
+      class="com.alprojects.data.StudentJdbcDAO">
       <property name="dataSource"  ref="dataSource" />    
    </bean>
       
