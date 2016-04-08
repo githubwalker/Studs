@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.alprojects.JsonBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +29,7 @@ public class SpringApiController {
     @Autowired
     private StudentJdbcDAO studDAO;
 
-    @RequestMapping( value="/getall", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping( value="/getall", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseEntity<List<Student>> getStudents()
     {
@@ -40,12 +39,11 @@ public class SpringApiController {
             .add("Records", studDAO.listStudents())
             .getBuiltObject();
 
-
         return new ResponseEntity(retobj, responseHeader, HttpStatus.OK);
     }
 
     @RequestMapping( value="/getPage/{startIndex}/{numberItems}",
-            method = RequestMethod.GET, produces = "application/json")
+            method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseEntity<List<Student>> getPage(
             @PathVariable("startIndex") int startIndex,
@@ -58,18 +56,18 @@ public class SpringApiController {
                 .add("TotalRecordCount", nStuds )
                 .add("Records", studDAO.listStudentsPaged(startIndex, numberItems) )
                 .getBuiltObject();
-
         return new ResponseEntity(retobj, responseHeader, HttpStatus.OK);
     }
 
     @RequestMapping( value="/append",
-            method = RequestMethod.GET, produces = "application/json")
+            method = RequestMethod.POST,
+            produces = "application/json", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<Student> appendStudent( @RequestBody final Student sa )
+    public ResponseEntity<Student> appendStudent( @RequestBody Student student_in )
     {
         HttpHeaders responseHeader = new HttpHeaders();
-        int id = studDAO.create( sa.getName(), sa.getAge() );
-        Student stud = new Student(id, sa.getName(), sa.getAge());
+        int id = studDAO.create( student_in.getName(), student_in.getAge() );
+        Student stud = new Student(id, student_in.getName(), student_in.getAge());
         Map<String,Object> retobj = new JsonBuilder()
                 .add( "Result", "OK" )
                 .add( "Record", stud )
@@ -78,25 +76,39 @@ public class SpringApiController {
         return new ResponseEntity(retobj, responseHeader, HttpStatus.OK);
     }
 
-    @RequestMapping( value="/fake",
-            method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping( value="/update/{id}",
+            method = RequestMethod.POST,
+            produces = "application/json", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<Student> getFakeStud()
+    public  ResponseEntity<Student> updateStudent(
+            @PathVariable("id") int id, // id to be updated
+            @RequestBody Student student_data // data to be updated
+    )
     {
         HttpHeaders responseHeader = new HttpHeaders();
-        Student stud = new Student(1, "Fake", 15);
+        studDAO.update( id, student_data.getName(), student_data.getAge() );
+        Student stud_new = new Student( student_data );
+        stud_new.setId( id );
 
-        return new ResponseEntity(stud, responseHeader, HttpStatus.OK);
+        Map<String, Object> retobj = new JsonBuilder()
+                .add("Result", "OK")
+                .add("Record", stud_new).getBuiltObject();
+
+        return new ResponseEntity(retobj, responseHeader, HttpStatus.OK);
     }
 
-    @RequestMapping( value="/putfake",
-            method = RequestMethod.GET, consumes = "text/plain")
+    @RequestMapping( value="/delete/{id}",
+            method = RequestMethod.POST,
+            produces = "application/json", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity putFakeStud(@RequestBody String str)
+    public ResponseEntity deleteStudent(@PathVariable("id") int id)
     {
         HttpHeaders responseHeader = new HttpHeaders();
-        return new ResponseEntity(null, responseHeader, HttpStatus.OK);
+        studDAO.delete(id);
+        Map<String, Object> retobj = new JsonBuilder()
+                .add("Result", "OK")
+                .getBuiltObject();
+        return new ResponseEntity(retobj, responseHeader, HttpStatus.OK);
     }
-
 }
 

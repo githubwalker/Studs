@@ -18,6 +18,13 @@ public class Student {
 		this.name = name;
 		this.age = age;
 	}
+
+	public Student( Student other )
+	{
+		this.id = other.id;
+		this.name = other.name;
+		this.age = other.age;
+	}
 	
 	@JsonProperty("Name")
 	public String getName() {

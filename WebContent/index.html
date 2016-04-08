@@ -42,12 +42,13 @@
             // sorting: true,
             // defaultSorting: 'PersonId ASC',
             // paging:true,
+            // /StudentService/springrestapi/students/
             actions: {
                 listAction: function (postData, jtParams) {
                     console.log("Loading from custom function...");
                     return $.Deferred(function ($dfd) {
                         $.ajax({
-                            url: 'rest/students/getPage/' + jtParams.jtStartIndex + '/' + jtParams.jtPageSize,
+                            url: 'springrestapi/students/getPage/' + jtParams.jtStartIndex + '/' + jtParams.jtPageSize,
                             type: 'POST',
                             dataType: 'json',
                             data: postData,
@@ -66,7 +67,7 @@
 
                     return $.Deferred(function ($dfd) {
                         $.ajax({
-                            url: 'rest/students/append',
+                            url: 'springrestapi/students/append',
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
@@ -92,7 +93,7 @@
 
                     return $.Deferred(function ($dfd) {
                         $.ajax({
-                            url: 'rest/students/update/' + stud.PersonId,
+                            url: 'springrestapi/students/update/' + stud.PersonId,
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
@@ -116,7 +117,7 @@
 
                     return $.Deferred(function ($dfd) {
                         $.ajax({
-                            url: 'rest/students/delete/' + postData.PersonId,
+                            url: 'springrestapi/students/delete/' + postData.PersonId,
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'

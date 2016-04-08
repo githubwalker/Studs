@@ -10,6 +10,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!-- http://stackoverflow.com/questions/11376304/right-way-to-write-json-deserializer-in-spring-or-extend-it -->
+
     <import resource="jdbc.xml"></import>
 
     <context:component-scan base-package="com.alprojects" />
@@ -19,12 +21,30 @@
             <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
             <bean class="org.springframework.http.converter.ResourceHttpMessageConverter" />
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="objectMapper" ref="jacksonObjectMapper" />
+                <!-- <property name="objectMapper" ref="jacksonObjectMapper" /> -->
+                <property name="objectMapper" ref="studentObjectMapper" />
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <bean id="jacksonObjectMapper"
-                class="com.alprojects.spr.StudentObjectMapper" />
+    <bean id="studentObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+
+        <property name="deserializersByType">
+            <map key-type="java.lang.Class">
+                <entry key="com.alprojects.Student">
+                    <bean class="com.alprojects.spr.StudentDeserializer" />
+                </entry>
+            </map>
+        </property>
+
+        <property name ="serializersByType">
+            <map key-type="java.lang.Class">
+                <entry key="com.alprojects.Student">
+                    <bean class="com.alprojects.spr.StudentSerializer" />
+                </entry>
+            </map>
+        </property>
+    </bean>
 
 </beans>
+
