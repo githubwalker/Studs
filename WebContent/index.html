@@ -42,7 +42,7 @@
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label  class="col-sm-2 control-label" for="inputName">Email</label>
+                            <label  class="col-sm-2 control-label" for="inputName">Student name</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="inputName" placeholder="Student name"/>
                             </div>
@@ -231,12 +231,13 @@
                     icon: 'scripts/jtable.2.4.0/themes/jqueryui/add.png',
                     text: 'Add New Record',
                     click: function () {
+
                         //perform your custom job...
                         console.log( "Add new record clicked" );
 
                         var dlg = $("#myModal");
-                        $( ".modal-body #inputName", dlg).val( "the Name" );
-                        $( ".modal-body #inputAge", dlg).val( 19 );
+                        // $( ".modal-body #inputName", dlg).val( "the Name" );
+                        // $( ".modal-body #inputAge", dlg).val( 19 );
 
                         dlg.find("#OKbtn").click( function () {
                             dlg.find("#OKbtn").addClass('btn-disabled');
@@ -246,7 +247,6 @@
                             var inAge = dlg.find("#inputAge").val();
                             dlg.modal('hide');
                             var stud = { Name : inName, Age : inAge };
-                            var studString = JSON.stringify(stud);
 
                             $.ajax({
                                 url: 'springrestapi/students/append',
@@ -256,15 +256,12 @@
                                 },
                                 type: 'POST',
                                 dataType: 'json',
-                                data: studString,
+                                data: JSON.stringify(stud),
                                 success: function (data) {
                                     console.log('createAction success ...');
 
                                     ppc.jtable( 'addRecord',
-                                        {
-                                            record: stud,
-                                            clientOnly : true
-                                        }
+                                        { record: stud, clientOnly : true }
                                     );
                                 },
                                 error: function () {
@@ -277,7 +274,6 @@
                         dlg.modal('show');
 
                         console.log( "leaving" );
-
                      }
                 }]
             }
