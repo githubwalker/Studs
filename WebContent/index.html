@@ -128,61 +128,6 @@
                         });
                     });
                 },
-                /*
-                createAction: function (postData) {
-                    console.log('createAction has been called...');
-                    var json_string = convert2jsonstring(postData);
-
-                    return $.Deferred(function ($dfd) {
-                        $.ajax({
-                            url: 'springrestapi/students/append',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            type: 'POST',
-                            dataType: 'json',
-                            data: json_string,
-                            success: function (data) {
-                                console.log('createAction success ...');
-                                $dfd.resolve(data);
-                            },
-                            error: function () {
-                                console.log('createAction error ...');
-                                $dfd.reject();
-                            }
-                        });
-                    });
-                },
-                */
-                /*
-                updateAction: function (postData) {
-                    console.log('updateAction has been called...');
-                    var json_string = convert2jsonstring(postData);
-                    var stud = JSON.parse( json_string );
-
-                    return $.Deferred(function ($dfd) {
-                        $.ajax({
-                            url: 'springrestapi/students/update/' + stud.PersonId,
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            type: 'POST',
-                            dataType: 'json',
-                            data: json_string,
-                            success: function (data) {
-                                console.log('updateAction success ...');
-                                $dfd.resolve(data);
-                            },
-                            error: function () {
-                                console.log('updateAction error ...');
-                                $dfd.reject();
-                            }
-                        });
-                    });
-                },
-                */
                 deleteAction: function (postData) {
                     console.log('updateAction has been called...');
 
