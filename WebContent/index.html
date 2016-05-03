@@ -168,10 +168,12 @@
                                 $( ".modal-body #inputAge", dlg).val( data.record.Age );
 
                                 dlg.find("#OKbtn").one( "click", onOKclicked );
+                                dlg.one( "hidden.bs.modal", function () {
+                                    dlg.find("#OKbtn").off( "click", onOKclicked );
+                                } );
 
                                 function onOKclicked () {
                                     dlg.find("#OKbtn").addClass('btn-disabled');
-                                    // dlg.find("#OKbtn").off("click", onOKclicked);
 
                                     var inName = dlg.find("#inputName").val();
                                     var inAge = dlg.find("#inputAge").val();
@@ -216,8 +218,13 @@
                         console.log( "Add new record clicked" );
 
                         var dlg = $("#myModal");
+                        $( ".modal-body #inputName", dlg).val( "" );
+                        $( ".modal-body #inputAge", dlg).val( "" );
 
                         dlg.find("#OKbtn").one( "click", onOKButton_inEditDialog );
+                        dlg.one( "hidden.bs.modal", function () {
+                            dlg.find("#OKbtn").off( "click", onOKclicked );
+                        } );
 
                         function onOKButton_inEditDialog () {
                             dlg.find("#OKbtn").addClass('btn-disabled');
@@ -226,7 +233,7 @@
                             var inName = dlg.find("#inputName").val();
                             var inAge = dlg.find("#inputAge").val();
                             dlg.modal('hide');
-                            // dlg.find("#OKbtn").off( "click", onOKButton_inEditDialog );
+
                             var stud = { Name : inName, Age : inAge };
 
                             $.ajax({
