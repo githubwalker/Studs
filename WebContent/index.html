@@ -27,12 +27,12 @@
 
 <body>
 
-<div id="myModal" class="modal fade">
+<div id="myAddUpdateDialog" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Confirmation</h4>
+                <h4 class="modal-title">Add/Update record</h4>
             </div>
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
@@ -58,6 +58,31 @@
         </div>
     </div>
 </div>
+
+<div id="myDeleteDialog" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Confirm record removal</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <p class="col-sm-12">Do you really want to remove record <label  id="record_placeholder"></label> ? </p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> <!-- data-dismiss="modal" -->
+                <button type="button" class="btn btn-primary" id = "OKbtnDelete">Confirm Removal</button> <!-- data-toggle="modal" -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <div id="PeopleTableContainer" style="width: 800px;"></div>
 
@@ -103,7 +128,9 @@
                             }
                         });
                     });
-                },
+                }
+                /*
+                ,
                 deleteAction: function (postData) {
                     console.log('updateAction has been called...');
 
@@ -127,7 +154,7 @@
                         });
                     });
                 }
-
+                */
             },
             fields: {
                 PersonId: {
@@ -145,7 +172,7 @@
                     title: 'age',
                     width: '20%'
                 },
-                CustomAction: {
+                CustomUpdate: {
                     title: '',
                     width: '1%',
                     sorting: false,
@@ -158,19 +185,11 @@
                             var id_code = id="custom-edit-record-button" + data.record.PersonId;
                             var strret = '<button title="Edit Record" id="' + id_code + '" class="jtable-command-button jtable-edit-command-button"><span>Edit Record</span></button>';
 
-                            ppc.off( "click", "#" + id_code, onEditClicked );
-                            ppc.on( "click", "#" + id_code, onEditClicked );
-
                             function onEditClicked () {
-                                var dlg = $("#myModal");
+                                var dlg = $("#myAddUpdateDialog");
                                 dlg.modal('show');
                                 $( ".modal-body #inputName", dlg).val( data.record.Name );
                                 $( ".modal-body #inputAge", dlg).val( data.record.Age );
-
-                                dlg.find("#OKbtn").one( "click", onOKclicked );
-                                dlg.one( "hidden.bs.modal", function () {
-                                    dlg.find("#OKbtn").off( "click", onOKclicked );
-                                } );
 
                                 function onOKclicked () {
                                     dlg.find("#OKbtn").addClass('btn-disabled');
@@ -201,7 +220,76 @@
                                         }
                                     });
                                 };
+
+                                dlg.find("#OKbtn").one( "click", onOKclicked );
+                                dlg.one( "hidden.bs.modal", function () {
+                                    dlg.find("#OKbtn").off( "click", onOKclicked );
+                                } );
                             };
+
+                            ppc.off( "click", "#" + id_code, onEditClicked );
+                            ppc.on( "click", "#" + id_code, onEditClicked );
+
+                            return strret;
+                        }
+                    }
+                },
+                CustomDelete: {
+                    title: '',
+                    width: '1%',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    list: true,
+
+                    display: function (data) {
+                        if (data.record) {
+                            var id_code = id="custom-delete-record-button" + data.record.PersonId;
+                            var strret = '<button title="Delete Record" id="' + id_code + '" class="jtable-command-button jtable-delete-command-button"><span>Delete Record</span></button>';
+
+                            function onDeleteClicked () {
+                                console.log("onDeleteClicked ...");
+
+                                var dlg = $("#myDeleteDialog");
+                                dlg.modal("show");
+                                $( ".modal-body #record_placeholder", dlg).text( JSON.stringify(data.record) );
+
+                                function onOKclicked_deleteDialog() {
+                                    console.log("Delete record confirmed ...");
+                                    dlg.find("#OKbtnDelete").addClass('btn-disabled');
+                                    dlg.modal( "hide" );
+                                    dlg.find("#OKbtnDelete").off( "click", onOKclicked_deleteDialog );
+
+                                    $.ajax({
+                                        url: 'springrestapi/students/delete/' + data.record.PersonId,
+                                        headers: {
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json'
+                                        },
+                                        type: 'POST',
+                                        dataType: 'json',
+                                        success: function (success_data) {
+                                            console.log('deleteAction success ...');
+                                            // ppc.deleteRecord( { key: data.record.PersonId, clientOnly : true } );
+                                            ppc.jtable( 'deleteRecord',
+                                                    { key: data.record.PersonId, clientOnly : true }
+                                            );
+                                        },
+                                        error: function () {
+                                            console.log('deleteAction error ...');
+                                        }
+                                    });
+
+                                }
+
+                                dlg.find("#OKbtnDelete").one( "click", onOKclicked_deleteDialog );
+                                dlg.one( "hidden.bs.modal", function () {
+                                    dlg.find("#OKbtnDelete").off( "click", onOKclicked_deleteDialog );
+                                } );
+                            };
+
+                            ppc.off( "click", "#" + id_code, onDeleteClicked );
+                            ppc.on( "click", "#" + id_code, onDeleteClicked );
 
                             return strret;
                         }
@@ -217,7 +305,7 @@
                         //perform your custom job...
                         console.log( "Add new record clicked" );
 
-                        var dlg = $("#myModal");
+                        var dlg = $("#myAddUpdateDialog");
                         $( ".modal-body #inputName", dlg).val( "" );
                         $( ".modal-body #inputAge", dlg).val( "" );
 
