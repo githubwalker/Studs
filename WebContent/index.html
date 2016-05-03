@@ -27,8 +27,6 @@
 
 <body>
 
-<!-- <button class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Большая модаль</button> -->
-
 <div id="myModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -63,16 +61,7 @@
 
 <div id="PeopleTableContainer" style="width: 800px;"></div>
 
-<!-- http://www.codeproject.com/Articles/594874/CRUD-tables-in-WebMatrix-using-jTable-jQuery-plugi -->
-<!-- https://www.youtube.com/watch?v=s-lV6B5LMjI&ebc=ANyPxKrUj1-c81e9Ci-rHyUXd77zgout-zopL7B0OgAOJb0gmequStH15-Dmwcxfr6wwizdYYwrwOez8AgSQZziYcvdcnH8zDg -->
-<!-- http://www.jquery-bootgrid.com/Examples#data -->
-<!-- http://bootstrap-table.wenzhixin.net.cn/ -->
-<!-- http://issues.wenzhixin.net.cn/bootstrap-table/ -->
-
 <script type="text/javascript">
-
-    // https://mindmup.github.io/editable-table/
-    // http://stackoverflow.com/questions/8648892/convert-url-parameters-to-a-javascript-object
 
     function convert2jsonstring( urlparams_string )
     {
@@ -89,27 +78,14 @@
 
     $(document).ready(function () {
 
-        // var varProt = $.hik.jtable.prototype;
         var ppc = $('#PeopleTableContainer');
 
         ppc.jtable({
             title: 'Table of students',
             paging:true,
             pageSize: 10,
-            // sorting: true,
-            // defaultSorting: 'PersonId ASC',
-            // paging:true,
             // /StudentService/springrestapi/students/
 
-            /*
-            recordsLoaded: function(event, data) {
-
-                var jtVar = $('.hik-jtable');
-                var jtRow = $('.jtable-data-row');
-                var jtMainCont = $('.jtable-main-container');
-                var thisVar = this;
-            },
-            */
             actions: {
                 listAction: function (postData, jtParams) {
                     console.log("Loading from custom function...");
