@@ -84,7 +84,7 @@
 
 
 
-<div id="PeopleTableContainer" style="width: 800px;"></div>
+<div id="PeopleTableContainer" style="width: 100%;"></div>
 
 <script type="text/javascript">
 
@@ -227,7 +227,8 @@
                                 } );
                             };
 
-                            ppc.off( "click", "#" + id_code, onEditClicked );
+                            // ppc.off( "click", "#" + id_code, onEditClicked );
+                            ppc.off( "click", "#" + id_code );
                             ppc.on( "click", "#" + id_code, onEditClicked );
 
                             return strret;
@@ -288,7 +289,8 @@
                                 } );
                             };
 
-                            ppc.off( "click", "#" + id_code, onDeleteClicked );
+                            // ppc.off( "click", "#" + id_code, onDeleteClicked );
+                            ppc.off( "click", "#" + id_code );
                             ppc.on( "click", "#" + id_code, onDeleteClicked );
 
                             return strret;
