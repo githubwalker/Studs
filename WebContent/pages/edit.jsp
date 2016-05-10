@@ -3,11 +3,13 @@
 <html lang="en">
 <head>
 
-    <script src="<c:url value="/scripts/jtable.2.4.0/external/json2.js" />" type="text/javascript"> </script>
+    <c:set var="serverpath" scope="session" value="${pageContext.request.contextPath}"/>
 
-    <link href="<c:url value="/scripts/jquery-ui-1.11.4/jquery-ui.css" />" rel="stylesheet" type="text/css" />
-    <link href="<c:url value="/scripts/jtable.2.4.0/themes/metro/blue/jtable.css" />" rel="stylesheet" type="text/css" />
-    <link href="<c:url value="/scripts/bootstrap-3.3.6/css/bootstrap.css" />" rel="stylesheet" />
+    <script src="${serverpath}/scripts/jtable.2.4.0/external/json2.js" type="text/javascript"> </script>
+
+    <link href="${serverpath}/scripts/jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="${serverpath}/scripts/jtable.2.4.0/themes/metro/blue/jtable.css" rel="stylesheet" type="text/css" />
+    <link href="${serverpath}/scripts/bootstrap-3.3.6/css/bootstrap.css" rel="stylesheet" />
 
     <style type="text/css">
         button, select {
@@ -17,12 +19,12 @@
     </style>
 
 
-    <script src="<c:url value="/scripts/jquery-2.2.0.js" />" type="text/javascript"> </script>
-    <script src="<c:url value="/scripts/bootstrap-3.3.6/js/bootstrap.js" />" type="text/javascript"> </script>
+    <script src="${serverpath}/scripts/jquery-2.2.0.js" type="text/javascript" > </script>
+    <script src="${serverpath}/scripts/bootstrap-3.3.6/js/bootstrap.js" type="text/javascript" > </script>
 
 
-    <script src="<c:url value="/scripts/jquery-ui-1.11.4/jquery-ui.js" />" type="text/javascript"> </script>
-    <script src="<c:url value="/scripts/jtable.2.4.0/jquery.jtable.js" />" type="text/javascript"> </script>
+    <script src="${serverpath}/scripts/jquery-ui-1.11.4/jquery-ui.js" type="text/javascript" > </script>
+    <script src="${serverpath}/scripts/jtable.2.4.0/jquery.jtable.js" type="text/javascript" > </script>
 
 </head>
 
@@ -116,7 +118,7 @@
                     console.log("Loading from custom function...");
                     return $.Deferred(function ($dfd) {
                         $.ajax({
-                            url: '<c:url value='/springrestapi/students/getPage/' />' + jtParams.jtStartIndex + '/' + jtParams.jtPageSize,
+                            url: '${serverpath}/springrestapi/students/getPage/' + jtParams.jtStartIndex + '/' + jtParams.jtPageSize,
                             type: 'POST',
                             dataType: 'json',
                             data: postData,
@@ -174,7 +176,7 @@
                                     dlg.modal('hide');
 
                                     $.ajax({
-                                        url: '<c:url value='springrestapi/students/update/' />' + data.record.PersonId,
+                                        url: '${serverpath}/springrestapi/students/update/' + data.record.PersonId,
                                         headers: {
                                             'Accept': 'application/json',
                                             'Content-Type': 'application/json'
@@ -236,7 +238,7 @@
                                     dlg.find("#OKbtnDelete").off( "click", onOKclicked_deleteDialog );
 
                                     $.ajax({
-                                        url: '<c:url value='springrestapi/students/delete/' />' + data.record.PersonId,
+                                        url: '${serverpath}/springrestapi/students/delete/' + data.record.PersonId,
                                         headers: {
                                             'Accept': 'application/json',
                                             'Content-Type': 'application/json'
@@ -301,7 +303,7 @@
                             var stud = { Name : inName, Age : inAge };
 
                             $.ajax({
-                                url: '<c:url value='springrestapi/students/append' />',
+                                url: '${serverpath}/springrestapi/students/append',
                                 headers: {
                                     'Accept': 'application/json',
                                     'Content-Type': 'application/json'
