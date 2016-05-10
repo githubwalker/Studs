@@ -13,9 +13,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping
 public class PagesController {
 
-    @RequestMapping( value = "/edit", method = RequestMethod.GET)
-    public String PageWithGrid(ModelMap model)
-    {
-        return "index";
+    public PagesController() {
+        int iii = 0;
     }
+
+    @RequestMapping("/edit_studs")
+    public String edit_list(ModelMap model)
+    {
+        return "edit";
+    }
+
+    @RequestMapping("/")
+    public String initial(ModelMap model)
+    {
+        return "redirect:/edit_studs";
+    }
+
 }
