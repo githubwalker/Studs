@@ -29,4 +29,10 @@ public class PagesController {
         return "redirect:/edit_studs";
     }
 
+    @RequestMapping("/login")
+    public String login(ModelMap model)
+    {
+        return "login";
+    }
+
 }
