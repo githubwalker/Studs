@@ -13,17 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping
 public class PagesController {
 
-    public PagesController() {
-        int iii = 0;
-    }
-
     @RequestMapping("/edit_studs")
     public String edit_list(ModelMap model)
     {
         return "edit";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public String initial(ModelMap model)
     {
         return "redirect:/edit_studs";
