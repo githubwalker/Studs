@@ -12,10 +12,36 @@
 
     <properties>
         <spring.version>4.1.5.RELEASE</spring.version>
+        <spring.security.version>4.1.0.RELEASE</spring.security.version>
         <jackson>LATEST</jackson>
         <jstl.version>1.2</jstl.version>
         <javax.servlet>LATEST</javax.servlet>
     </properties>
+
+<!--
+Spring security needed libs:
+
+
+    aopalliance-1.0.jar
+    aspectjweaver-1.6.10.jar
+    commons-logging-1.1.1.jar
+    embeddedwebserver.jar
+    org.springframework.web.servlet.jar
+    servlet-api-2.5.jar
+    spring-aop-3.0.7.RELEASE.jar
+    spring-asm-3.0.7.RELEASE.jar
+    spring-beans-3.0.7.RELEASE.jar
+    spring-context-3.0.7.RELEASE.jar
+    spring-core-3.0.7.RELEASE.jar
+    spring-expression-3.0.7.RELEASE.jar
+    spring-jdbc-3.0.7.RELEASE.jar
+    spring-security-config-3.1.4.RELEASE.jar
+    spring-security-core-3.1.4.RELEASE.jar
+    spring-security-web-3.1.4.RELEASE.jar
+    spring-tx-3.0.7.RELEASE.jar
+    spring-web-3.0.7.RELEASE.jar
+
+-->
 
 
     <build>
@@ -149,6 +175,23 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
 
 
     </dependencies>
