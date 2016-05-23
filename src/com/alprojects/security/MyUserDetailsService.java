@@ -23,7 +23,7 @@ public class MyUserDetailsService implements UserDetailsService
         UserDetails userDetails =
                 new org.springframework.security.core.userdetails.User(
                         "andrew",
-                        "7110eda4d09e062aa5e4a390b0a572ac0d2c0220",
+                        "$2a$04$hG1oXZ0dhkY4T2Q1elrjwO5OVml7094BMitcduNcMF63.HLk6/4Bm",
                         roles);
 
         return userDetails;
