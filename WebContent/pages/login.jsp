@@ -41,36 +41,16 @@
 
 <div class="container" style="width: 300px;">
     <form action="${serverpath}/login" method="post">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="form-control" name="j_username" placeholder="Email address" required autofocus value="andrew">
-        <input type="password" class="form-control" name="j_password" placeholder="Password" required value="1234">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
-    </form>
-</div>
-
-
-
-<!--
-<div class="container">
-
-    <form method="POST" action="${contextPath}/login" class="form-signin">
-        <h2 class="form-heading">Log in</h2>
-
         <div class="form-group ${error != null ? 'has-error' : ''}">
-            <span>${message}</span>
-            <input name="username" type="text" class="form-control" placeholder="Username" autofocus="true"/>
-            <input name="password" type="password" class="form-control" placeholder="Password"/>
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <input type="text" class="form-control" name="j_username" placeholder="Email address" required autofocus value="andrew">
+            <input type="password" class="form-control" name="j_password" placeholder="Password" required value="1234">
             <span>${error}</span>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-            <h4 class="text-center"><a href="${contextPath}/registration">Create an account</a></h4>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
         </div>
-
     </form>
 </div>
--->
 
 
 </body>

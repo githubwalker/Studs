@@ -29,7 +29,7 @@
                 login-page="/login"
                 default-target-url="/edit_studs"
                 authentication-failure-url="/login?error"
-                username-parameter="username" password-parameter="password"/>
+                username-parameter="j_username" password-parameter="j_password"/>
         <logout logout-success-url="/login?logout" />
         <!-- <csrf disabled="true"/> -->
     </http>
