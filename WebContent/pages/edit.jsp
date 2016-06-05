@@ -2,6 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    -->
 
     <c:set var="serverpath" scope="session" value="${pageContext.request.contextPath}"/>
 
@@ -119,6 +123,7 @@
                     return $.Deferred(function ($dfd) {
                         $.ajax({
                             url: '${serverpath}/springrestapi/students/getPage/' + jtParams.jtStartIndex + '/' + jtParams.jtPageSize,
+                            // beforeSend: function (request) { request.setRequestHeader( "_csrf", "${_csrf.token}" ); },
                             type: 'POST',
                             dataType: 'json',
                             data: postData,

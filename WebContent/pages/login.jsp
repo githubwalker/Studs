@@ -40,7 +40,7 @@
 
 
 <div class="container" style="width: 300px;">
-    <form action="${serverpath}/login" method="post">
+    <form action="${serverpath}/j_spring_security_check" method="post">
         <div class="form-group ${error != null ? 'has-error' : ''}">
             <h2 class="form-signin-heading">Please sign in</h2>
             <input type="text" class="form-control" name="j_username" placeholder="Email address" required autofocus value="andrew">
