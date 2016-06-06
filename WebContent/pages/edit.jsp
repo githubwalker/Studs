@@ -1,11 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    -->
 
     <c:set var="serverpath" scope="session" value="${pageContext.request.contextPath}"/>
 
@@ -29,6 +26,37 @@
 
     <script src="${serverpath}/scripts/jquery-ui-1.11.4/jquery-ui.js" type="text/javascript" > </script>
     <script src="${serverpath}/scripts/jtable.2.4.0/jquery.jtable.js" type="text/javascript" > </script>
+
+    <script>
+        function logoutPostHelper( logoutUrl, csrfParamName, csrfToken ) {
+            console.log("===>>> Loggin out ===>>>");
+
+            var util = {};
+            util.post = function(url, fields) {
+                var $form = $('<form>', {
+                    action: url,
+                    method: 'post'
+                });
+                $.each(fields, function(key, val) {
+                    $('<input>').attr({
+                        type: "hidden",
+                        name: key,
+                        value: val
+                    }).appendTo($form);
+                });
+                $form.submit();
+            }
+
+            var postData = {};
+            postData[csrfParamName] = csrfToken;
+            util.post( logoutUrl, postData );
+        }
+
+        var logoutTransitHelper = function() {
+            logoutPostHelper( "${serverpath}/j_spring_security_logout", "${_csrf.parameterName}", "${_csrf.token}"  );
+        }
+
+    </script>
 
 </head>
 
@@ -89,9 +117,33 @@
 </div>
 
 
+<nav class="navbar navbar-default navbar-static-top navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Welcome to Students editor <sec:authentication property="name"/>!</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><sec:authentication property="name"/> : </a></li>
+                <li><a href="javascript:logoutTransitHelper()">Log out >></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
 
 
-<div id="PeopleTableContainer" style="width: 100%;"></div>
+<div class="container">
+    <div>
+        <h1> Edit students list </h1>
+        <div id="PeopleTableContainer" style="width: 100%;"></div>
+    </div>
+</div>
 
 <script type="text/javascript">
 

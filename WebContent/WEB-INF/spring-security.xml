@@ -22,9 +22,11 @@
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/index" access="isAuthenticated()" />
+        <intercept-url pattern="/scripts/**" access="permitAll" />
         <intercept-url pattern="/" access="isAuthenticated()" />
         <intercept-url pattern="/edit_studs" access="isAuthenticated()" />
         <intercept-url pattern="/j_spring_security_check" access="permitAll" />
+        <intercept-url pattern="/j_spring_security_logout" access="isAuthenticated()" />
 
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
@@ -40,7 +42,7 @@
                 always-use-default-target="true"
         />
 
-        <!-- <logout logout-success-url="/login?logout" /> -->
+        <logout logout-success-url="/login?logout" logout-url="/j_spring_security_logout" />
         <csrf disabled="true"/> <!-- remove it when problem with csrf will be solved -->
     </http>
 
