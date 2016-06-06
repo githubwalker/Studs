@@ -26,6 +26,12 @@ public class PagesController {
         return "redirect:/edit_studs";
     }
 
+    @RequestMapping("/")
+    public String initial2(Model model)
+    {
+        return "redirect:/edit_studs";
+    }
+
     @RequestMapping("/login")
     public String login(Model model, String error, String logout)
     {
