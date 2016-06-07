@@ -27,36 +27,8 @@
     <script src="${serverpath}/scripts/jquery-ui-1.11.4/jquery-ui.js" type="text/javascript" > </script>
     <script src="${serverpath}/scripts/jtable.2.4.0/jquery.jtable.js" type="text/javascript" > </script>
 
-    <script>
-        function logoutPostHelper( logoutUrl, csrfParamName, csrfToken ) {
-            console.log("===>>> Loggin out ===>>>");
+    <script src="${serverpath}/scripts/custom/helpers.js" type="text/javascript"></script>
 
-            var util = {};
-            util.post = function(url, fields) {
-                var $form = $('<form>', {
-                    action: url,
-                    method: 'post'
-                });
-                $.each(fields, function(key, val) {
-                    $('<input>').attr({
-                        type: "hidden",
-                        name: key,
-                        value: val
-                    }).appendTo($form);
-                });
-                $form.submit();
-            }
-
-            var postData = {};
-            postData[csrfParamName] = csrfToken;
-            util.post( logoutUrl, postData );
-        }
-
-        var logoutTransitHelper = function() {
-            logoutPostHelper( "${serverpath}/j_spring_security_logout", "${_csrf.parameterName}", "${_csrf.token}"  );
-        }
-
-    </script>
 
 </head>
 
@@ -116,6 +88,9 @@
     </div>
 </div>
 
+<form id="logout_form" action="${serverpath}/j_spring_security_logout" name="f" method="POST" hidden>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</form>
 
 <nav class="navbar navbar-default navbar-static-top navbar-inverse">
     <div class="container">
@@ -131,7 +106,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><sec:authentication property="name"/> : </a></li>
-                <li><a href="javascript:logoutTransitHelper()">Log out >></a></li>
+                <li><a href="javascript:$('#logout_form').submit()">Log out >></a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
