@@ -19,7 +19,7 @@ public class StudentJdbcDAO {
 		jdbcTemplateObject = new SimpleJdbcTemplate(ds);
 		jdbcInsert =   
 			new SimpleJdbcInsert(ds)
-			.withTableName("students")
+			.withTableName("Students")
 			.usingGeneratedKeyColumns("id");  		
 	}
 
