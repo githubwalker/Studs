@@ -6,17 +6,17 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StudentJdbcDAO {
-	private SimpleJdbcTemplate jdbcTemplateObject;
+	private JdbcTemplate jdbcTemplateObject;
 	private SimpleJdbcInsert jdbcInsert;
 
 	public void setDataSource(DataSource ds) {
-		jdbcTemplateObject = new SimpleJdbcTemplate(ds);
+		jdbcTemplateObject = new JdbcTemplate(ds);
 		jdbcInsert =   
 			new SimpleJdbcInsert(ds)
 			.withTableName("Students")
@@ -31,10 +31,9 @@ public class StudentJdbcDAO {
 		return id.intValue();
 	}
 	
-
 	public Student getStudent(Integer id) {
 		String sql = "select name, age from Students where id = ?";
-		return jdbcTemplateObject.queryForObject(sql, new StudentMapper(), id);
+		return jdbcTemplateObject.queryForObject(sql, new Object[]{id}, new StudentMapper());
 	}
 
 	public List<Student> listStudentsPaged( Integer fromIndex, Integer nItems ) {
@@ -44,7 +43,7 @@ public class StudentJdbcDAO {
 
 	public Integer getTotalStudents() {
 		String sql = "select count(*) from Students";
-		return jdbcTemplateObject.queryForInt( sql );
+		return jdbcTemplateObject.queryForObject(sql, Integer.class);
 	}
 
 	public List<Student> listStudents() {
